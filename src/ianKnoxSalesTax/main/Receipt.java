@@ -1,8 +1,5 @@
-package ianknox;
+package ianKnoxSalesTax.main;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,7 +7,9 @@ public class Receipt {
 
     public ArrayList printout(ArrayList<HashMap<String, String>> lineItems) {
         Double totalTaxAmount = 0.00;
-        ArrayList<HashMap<String, String>> output = new ArrayList<HashMap<String, String>>();
+        Double totalCost = 0.00;
+
+        ArrayList output = new ArrayList();
 
         for (HashMap<String, String> lineItem : lineItems) {
             Double itemTotalTaxRate = 0.00;
@@ -30,15 +29,22 @@ public class Receipt {
             HashMap outputItem = new HashMap();
             outputItem.put("amount", String.format("%.2f", amountWithTax));
             outputItem.put("name", lineItem.get("name"));
+            outputItem.put("quantity", lineItem.get("quantity"));
             output.add(outputItem);
 
             totalTaxAmount += taxAmountRounded;
+            totalCost += amountWithTax;
         }
         HashMap taxItem = new HashMap();
-//        double totalTaxRounded = ((double) (long) (totalTaxAmount * 20 + 0.5)) / 20;
-        taxItem.put("amount", String.format("%.2f", totalTaxAmount));
         taxItem.put("name", "sales tax");
+        taxItem.put("amount", String.format("%.2f", totalTaxAmount));
+
+        HashMap total = new HashMap();
+        total.put("name", "total");
+        total.put("amount", String.format("%.2f", totalCost));
+
         output.add(taxItem);
+        output.add(total);
         return output;
     }
 }
