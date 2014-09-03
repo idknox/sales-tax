@@ -1,47 +1,37 @@
 package ianKnoxSalesTax.main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class Receipt {
 
-    public ArrayList printout(ArrayList<HashMap<String, String>> lineItems) {
+    public List printout(List<LineItem> lineItems) {
         Double totalTaxAmount = 0.00;
         Double totalCost = 0.00;
 
-        ArrayList output = new ArrayList();
+        List output = new ArrayList();
 
-        for (HashMap<String, String> lineItem : lineItems) {
-            Double itemTotalTaxRate = 0.00;
+        for (LineItem lineItem : lineItems) {
+            Double totalTaxRate = lineItem.getTaxRate();
 
-            if (lineItem.get("category") != "food" && lineItem.get("category") != "book" && lineItem.get("category") != "medical") {
-                itemTotalTaxRate += 0.10;
-            }
-            if (lineItem.get("name").contains("imported")) {
-                itemTotalTaxRate += 0.05;
-            }
-            Double taxAmount = Double.parseDouble(lineItem.get("amount")) * itemTotalTaxRate;
+            lineItem.setTaxAmount(lineItem.getCost() * lineItem.getTaxRate());
 
-            Double taxAmountRounded = Math.ceil(taxAmount / 0.05) * 0.05;
+            Double taxAmountRounded = Math.ceil(lineItem.getTaxAmount() / 0.05) * 0.05;
 
-            Double amountWithTax = Double.parseDouble(lineItem.get("amount")) + taxAmountRounded;
-
-            HashMap outputItem = new HashMap();
-            outputItem.put("amount", String.format("%.2f", amountWithTax));
-            outputItem.put("name", lineItem.get("name"));
-            outputItem.put("quantity", lineItem.get("quantity"));
+            Double costAfterTax = lineItem.getCost() + taxAmountRounded;
+            System.out.println(costAfterTax);
+            Double costAfterTaxRounded = Math.round(costAfterTax * 100.0) /100.0;
+            LineItem outputItem = new LineItem(lineItem.getName(), lineItem.getCategory(), lineItem.getQuantity(), costAfterTaxRounded);
             output.add(outputItem);
 
             totalTaxAmount += taxAmountRounded;
-            totalCost += amountWithTax;
+            totalCost += costAfterTaxRounded;
+            totalCost *= lineItem.getQuantity();
         }
-        HashMap taxItem = new HashMap();
-        taxItem.put("name", "sales tax");
-        taxItem.put("amount", String.format("%.2f", totalTaxAmount));
 
-        HashMap total = new HashMap();
-        total.put("name", "total");
-        total.put("amount", String.format("%.2f", totalCost));
+        LineItem taxItem = new LineItem("sales tax", "tax", 1, totalTaxAmount);
+
+        LineItem total = new LineItem("total", "total", 1, totalCost);
 
         output.add(taxItem);
         output.add(total);
