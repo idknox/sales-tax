@@ -1,25 +1,33 @@
 package ianKnoxSalesTax.main;
 
 
+import com.sun.deploy.util.ArrayUtil;
+import com.sun.tools.javac.util.ArrayUtils;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        LineItem firstItem = new LineItem("imported bottle of perfume", "cosmetics", 1, 27.99);
-        LineItem secondItem = new LineItem("bottle of perfume", "cosmetics", 1, 18.99);
-        LineItem thirdItem = new LineItem("packet of headache pills", "medical", 1, 9.75);
-        LineItem fourthItem = new LineItem("imported chocolates", "food", 1, 11.25);
 
         List cartItems = new ArrayList();
-        cartItems.add(firstItem);
-        cartItems.add(secondItem);
-        cartItems.add(thirdItem);
-        cartItems.add(fourthItem);
-
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(args[0]));
+            String line;
+            String[][] entries = new String[][]{};
+            String headerLine = br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] entry = line.split(",");
+                LineItem item = new LineItem(entry[1], entry[2], Integer.parseInt(entry[0]), Double.parseDouble(entry[3]));
+                cartItems.add(item);
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
         Cart newCart = new Cart(cartItems);
         Order testOrder = new Order(newCart);
         testOrder.printReceipt();
     }
-
 }

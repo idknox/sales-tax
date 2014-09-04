@@ -1,5 +1,6 @@
 package ianKnoxSalesTax.main;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Order {
         return orderTotal;
     }
 
-    public List<LineItem> ReceiptItems() {
+    public List<LineItem> getReceiptItems() {
         List output = new ArrayList();
 
         for (LineItem lineItem : this.items.getCartItems()) {
@@ -47,7 +48,7 @@ public class Order {
 
     private Double computeOrderTotal() {
         Double total = 0.00;
-        for (LineItem lineItem : ReceiptItems()) {
+        for (LineItem lineItem : getReceiptItems()) {
             total += lineItem.getCost();
         }
         return (double) Math.round(total * 100) / 100;

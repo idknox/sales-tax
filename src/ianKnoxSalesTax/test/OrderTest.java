@@ -14,7 +14,7 @@ public class OrderTest extends TestCase {
     }
 
     @Test
-    public void testReceiptPrintsBasicItems() {
+    public void testReceiptTotalsBasicItems() {
 
         LineItem firstItem = new LineItem("Book 1", "book", 1, 12.49);
         LineItem secondItem = new LineItem("CD 1", "music", 1, 14.99);
@@ -46,7 +46,7 @@ public class OrderTest extends TestCase {
     }
 
     @Test
-    public void testReceiptPrintsImportedItems() {
+    public void testReceiptTotalsImportedItems() {
 
         LineItem firstItem = new LineItem("imported box of chocolates", "food", 1, 10.00);
         LineItem secondItem = new LineItem("imported bottle of perfume", "cosmetics", 1, 47.50);
@@ -74,7 +74,7 @@ public class OrderTest extends TestCase {
     }
 
     @Test
-    public void testReceiptPrintsoutImportedandOtherTaxedItems() {
+    public void testReceiptTotalsImportedAndOtherTaxedItems() {
 
         LineItem firstItem = new LineItem("imported bottle of perfume", "cosmetics", 1, 27.99);
         LineItem secondItem = new LineItem("bottle of perfume", "cosmetics", 1, 18.99);
