@@ -1,10 +1,8 @@
-package ianKnoxSalesTax.test;
+package ianknox;
 
-import ianKnoxSalesTax.main.Cart;
-import ianKnoxSalesTax.main.LineItem;
-import ianKnoxSalesTax.main.Order;
 import junit.framework.TestCase;
 import org.junit.Test;
+
 import java.util.*;
 
 public class OrderTest extends TestCase {

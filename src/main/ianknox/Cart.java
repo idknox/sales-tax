@@ -1,4 +1,4 @@
-package ianKnoxSalesTax.main;
+package ianknox;
 
 import java.util.List;
 
