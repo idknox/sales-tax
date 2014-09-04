@@ -105,4 +105,5 @@ public class LineItem {
     public void setTaxAmount(Double taxAmount) {
         this.taxAmount = taxAmount;
     }
+}
 
