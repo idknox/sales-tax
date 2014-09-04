@@ -23,8 +23,8 @@ public class LineItem {
         if (!imported.equals(lineItem.imported)) return false;
         if (!name.equals(lineItem.name)) return false;
         if (!quantity.equals(lineItem.quantity)) return false;
-        if (taxAmount != null ? !taxAmount.equals(lineItem.taxAmount) : lineItem.taxAmount != null) return false;
         if (!taxRate.equals(lineItem.taxRate)) return false;
+        if (!taxAmount.equals(lineItem.taxAmount)) return false;
 
         return true;
     }
@@ -37,6 +37,7 @@ public class LineItem {
         this.imported = calculateImportedStatus();
         this.basicTaxExempt = calculateExemptionStatus();
         this.taxRate = calculateTaxRate();
+        this.taxAmount = calculateTaxAmount();
     }
 
     public String getName() {
@@ -117,5 +118,9 @@ public class LineItem {
             rate += 0.05;
         }
         return rate;
+    }
+
+    private Double calculateTaxAmount() {
+        return Math.ceil((this.cost * this.taxRate) / 0.05) * 0.05;
     }
 }

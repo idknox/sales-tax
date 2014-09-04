@@ -1,12 +1,21 @@
-package ianKnoxSalesTax.main;
+package ianKnoxSalesTax.test;
 
+import ianKnoxSalesTax.main.LineItem;
 import junit.framework.TestCase;
 import org.junit.Before;
+import org.junit.Test;
 
 public class LineItemTest extends TestCase {
+    LineItem testItem;
+    @Before
+    void createLineItem() {
+        testItem =  new LineItem("testName", "testCategory", 1, 0.00);
+    }
 
-    public void testName() throws Exception {
-
+    @Test
+    public void testName() {
+        System.out.println(testItem.getName());
+        assertEquals("testName", testItem.getName());
     }
 
     public void testSetName() throws Exception {
