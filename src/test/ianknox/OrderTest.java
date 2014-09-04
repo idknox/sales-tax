@@ -7,8 +7,8 @@ import java.util.*;
 
 public class OrderTest extends TestCase {
     @Test
-    public void testReceiptExists() {
-        Order newOrder = new Order(new Cart(new ArrayList<LineItem>()));
+    public void testOrderExists() {
+        Order newOrder = new Order(new ArrayList<LineItem>());
     }
 
     @Test
@@ -23,22 +23,22 @@ public class OrderTest extends TestCase {
         cartItems.add(secondItem);
         cartItems.add(thirdItem);
 
-        Cart newCart = new Cart(cartItems);
+        LineItem firstExpectedItem = new LineItem("Book 1", "book", 1, 12.49);
+        LineItem secondExpectedItem = new LineItem("CD 1", "music", 1, 16.49);
+        LineItem thirdExpectedItem = new LineItem("chocolate", "food", 1, 0.85);
 
-        LineItem firstOrderItem = new LineItem("Book 1", "book", 1, 12.49);
-        LineItem secondOrderItem = new LineItem("CD 1", "music", 1, 16.49);
-        LineItem thirdOrderItem = new LineItem("chocolate", "food", 1, 0.85);
+        List expectedReceiptItems = new ArrayList();
+        expectedReceiptItems.add(firstExpectedItem);
+        expectedReceiptItems.add(secondExpectedItem);
+        expectedReceiptItems.add(thirdExpectedItem);
 
-        List output = new ArrayList();
-        output.add(firstOrderItem);
-        output.add(secondOrderItem);
-        output.add(thirdOrderItem);
-
-        Order testOrder = new Order(newCart);
+        Order testOrder = new Order(cartItems);
 
         Double actualOrderTotal = testOrder.getOrderTotal();
         Double actualTaxTotal = testOrder.getTaxTotal();
+        List actualReceiptItems = testOrder.getReceiptItems();
 
+        assertEquals(expectedReceiptItems, actualReceiptItems);
         assertEquals(1.50, actualTaxTotal);
         assertEquals(29.83, actualOrderTotal);
     }
@@ -53,20 +53,20 @@ public class OrderTest extends TestCase {
         cartItems.add(firstItem);
         cartItems.add(secondItem);
 
-        Cart newCart = new Cart(cartItems);
-
         LineItem firstExpectedItem = new LineItem("imported box of chocolates", "food", 1, 10.50);
         LineItem secondExpectedItem = new LineItem("imported bottle of perfume", "cosmetics", 1, 54.65);
 
-        List output = new ArrayList();
-        output.add(firstExpectedItem);
-        output.add(secondExpectedItem);
+        List expectedReceiptItems = new ArrayList();
+        expectedReceiptItems.add(firstExpectedItem);
+        expectedReceiptItems.add(secondExpectedItem);
 
-        Order testOrder = new Order(newCart);
+        Order testOrder = new Order(cartItems);
 
         Double actualOrderTotal = testOrder.getOrderTotal();
         Double actualTaxTotal = testOrder.getTaxTotal();
+        List actualReceiptItems = testOrder.getReceiptItems();
 
+        assertEquals(expectedReceiptItems, actualReceiptItems);
         assertEquals(7.65, actualTaxTotal);
         assertEquals(65.15, actualOrderTotal);
     }
@@ -85,24 +85,25 @@ public class OrderTest extends TestCase {
         cartItems.add(thirdItem);
         cartItems.add(fourthItem);
 
-        Cart newCart = new Cart(cartItems);
-        Order testOrder = new Order(newCart);
 
         LineItem firstExpectedItem = new LineItem("imported bottle of perfume", "cosmetics", 1, 32.19);
         LineItem secondExpectedItem = new LineItem("bottle of perfume", "cosmetics", 1, 20.89);
         LineItem thirdExpectedItem = new LineItem("packet of headache pills", "medical", 1, 9.75);
         LineItem fourthExpectedItem = new LineItem("imported chocolates", "food", 1, 11.85);
 
-        List output = new ArrayList();
-        output.add(firstExpectedItem);
-        output.add(secondExpectedItem);
-        output.add(thirdExpectedItem);
-        output.add(fourthExpectedItem);
+        List expectedReceiptItems = new ArrayList();
+        expectedReceiptItems.add(firstExpectedItem);
+        expectedReceiptItems.add(secondExpectedItem);
+        expectedReceiptItems.add(thirdExpectedItem);
+        expectedReceiptItems.add(fourthExpectedItem);
 
+        Order testOrder = new Order(cartItems);
 
         Double actualOrderTotal = testOrder.getOrderTotal();
         Double actualTaxTotal = testOrder.getTaxTotal();
+        List actualReceiptItems = testOrder.getReceiptItems();
 
+        assertEquals(expectedReceiptItems, actualReceiptItems);
         assertEquals(6.70, actualTaxTotal);
         assertEquals(74.68, actualOrderTotal);
     }

@@ -29,16 +29,8 @@ public class LineItem {
         }
     }
 
-    public Boolean isImported() {
-        return imported;
-    }
-
     private Boolean calculateExemptionStatus() {
         return (this.category.equals("food") || this.category.equals("medical") || this.category.equals("book"));
-    }
-
-    public Boolean isExempt() {
-        return basicTaxExempt;
     }
 
     private Double calculateTaxRate() {
@@ -55,31 +47,21 @@ public class LineItem {
 
     private Double calculateTaxAmount() {
 
-        return Math.ceil((this.cost * this.taxRate) / 0.05) * 0.05;
+        Double roundedToNickel = Math.ceil((this.cost * this.taxRate) / 0.05) * 0.05;
+
+        return (double) Math.round(roundedToNickel * 100) / 100;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public Integer getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     public Double getCost() {
@@ -90,20 +72,28 @@ public class LineItem {
         this.cost = cost;
     }
 
-    public Double getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(Double taxRate) {
-        this.taxRate = taxRate;
-    }
-
     public Double getTaxAmount() {
         return taxAmount;
     }
 
-    public void setTaxAmount(Double taxAmount) {
-        this.taxAmount = taxAmount;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LineItem lineItem = (LineItem) o;
+
+        if (basicTaxExempt != null ? !basicTaxExempt.equals(lineItem.basicTaxExempt) : lineItem.basicTaxExempt != null)
+            return false;
+        if (category != null ? !category.equals(lineItem.category) : lineItem.category != null) return false;
+        if (cost != null ? !cost.equals(lineItem.cost) : lineItem.cost != null) return false;
+        if (imported != null ? !imported.equals(lineItem.imported) : lineItem.imported != null) return false;
+        if (name != null ? !name.equals(lineItem.name) : lineItem.name != null) return false;
+        if (quantity != null ? !quantity.equals(lineItem.quantity) : lineItem.quantity != null) return false;
+        if (taxAmount != null ? !taxAmount.equals(lineItem.taxAmount) : lineItem.taxAmount != null) return false;
+        if (taxRate != null ? !taxRate.equals(lineItem.taxRate) : lineItem.taxRate != null) return false;
+
+        return true;
     }
 }
 

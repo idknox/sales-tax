@@ -6,10 +6,9 @@ public class Main {
     public static void main(String[] args) {
 
         CsvReader newFile = new CsvReader(args[0]);
-        List cartItems = newFile.getLineItems();
+        List cartItems = newFile.getCartItems();
 
-        Cart newCart = new Cart(cartItems);
-        Order testOrder = new Order(newCart);
+        Order testOrder = new Order(cartItems);
         testOrder.printReceipt();
     }
 }

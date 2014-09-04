@@ -1,3 +1,29 @@
+Description:
+
+I intended to break the problem into 4 roles:
+
+1. A line item for each product entry.
+2. A tax calculator to handle all tax data.
+3. An order which takes line items and produces a receipt that is composed
+   of line items with after-tax cost, tax total and order total.
+4. A CSV reader to open the input file and populate line items.
+
+I forewent the tax calculator and instead gave the line item the
+responsibility of managing its own tax data. I am overall not satisfied with this,
+as it does not effectively separate concerns, but this was my first time
+building anything in Java.
+
+I used Double over BigDecimal since we are rounding the tax to .05, and thus
+losing precision regardless of what structure is used to represent the data.
+
+Instructions:
+
+Run Main with the desired input csv file as the first argument.
+Output will print to console.
+JUnit tests ensure solution works correctly.
+
+Problem:
+
 Sales Taxes
 
 Basic sales tax is applicable at a rate of 10% on all goods, except books, food, and medical products that are exempt. Import duty is an additional sales tax applicable on all imported goods at a rate of 5%, with no exemptions.

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private Cart items;
+    private List<LineItem> cartItems;
     private Double taxTotal;
     private Double orderTotal;
 
-    public Order(Cart lineItems) {
-        this.items = lineItems;
+    public Order(List cartItems) {
+        this.cartItems = cartItems;
         this.orderTotal = computeOrderTotal();
         this.taxTotal = computeTaxTotal();
     }
@@ -17,17 +17,19 @@ public class Order {
     public List<LineItem> getReceiptItems() {
         List output = new ArrayList();
 
-        for (LineItem lineItem : this.items.getCartItems()) {
-            lineItem.setCost((double) Math.round((lineItem.getCost() + lineItem.getTaxAmount()) * 100) / 100);
-            output.add(lineItem);
+        for (LineItem cartItem : this.cartItems) {
+            Double costAfterTax = (double) Math.round((cartItem.getCost() + cartItem.getTaxAmount()) * 100) / 100;
+
+            LineItem receiptItem = new LineItem(cartItem.getName(), cartItem.getCategory(), cartItem.getQuantity(), costAfterTax);
+            output.add(receiptItem);
         }
         return output;
     }
 
     public void printReceipt() {
-        for (LineItem lineItem : this.items.getCartItems()) {
-            System.out.print(lineItem.getQuantity().toString() + " " + lineItem.getName() + ": ");
-            System.out.print(String.format("%.2f", lineItem.getCost()) + "\n");
+        for (LineItem receiptItem : getReceiptItems()) {
+            System.out.print(receiptItem.getQuantity().toString() + " " + receiptItem.getName() + ": ");
+            System.out.print(String.format("%.2f", receiptItem.getCost()) + "\n");
         }
         System.out.println("Sales Taxes: " + String.format("%.2f", this.taxTotal));
         System.out.println("Total: " + String.format("%.2f", this.orderTotal));
@@ -35,22 +37,18 @@ public class Order {
 
     private Double computeOrderTotal() {
         Double total = 0.00;
-        for (LineItem lineItem : getReceiptItems()) {
-            total += lineItem.getCost();
+        for (LineItem receiptItem : getReceiptItems()) {
+            total += receiptItem.getCost();
         }
         return (double) Math.round(total * 100) / 100;
     }
 
     private Double computeTaxTotal() {
         Double total = 0.00;
-        for (LineItem lineItem : this.items.getCartItems()) {
-            total += lineItem.getTaxAmount();
+        for (LineItem cartItem : this.cartItems) {
+            total += cartItem.getTaxAmount();
         }
         return (double) Math.round(total * 100) / 100;
-    }
-
-    public Cart getLineItems() {
-        return items;
     }
 
     public Double getTaxTotal() {
